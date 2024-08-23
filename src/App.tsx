@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
-import ShoppingList from './components/ShoppingList';
+// import ShoppingList from './components/ShoppingList';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import { auth } from '../firebase';
 import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const user = auth.currentUser;
 
   return (
     <>
@@ -18,7 +23,13 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <ShoppingList />
+      {/* <ShoppingList /> */}
+
+      <SignUp />
+
+      {!user && <SignIn />}
+      {user ? <p>Welcome, {user.email}</p> : null}
+      {user ? <button onClick={() => auth.signOut()}>Sign Out</button> : null}
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
