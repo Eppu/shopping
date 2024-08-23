@@ -1,0 +1,47 @@
+# Ignore node_modules directories
+node_modules/
+
+# Ignore build output directories
+dist/
+build/
+
+# Ignore environment-specific files
+.env
+.env.local
+.env.*.local
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore logs and generated files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore package lock files
+package-lock.json
+yarn.lock
+
+# Ignore TypeScript build output
+*.tsbuildinfo
+
+# Ignore Vite build output
+.vite/
+
+# Ignore backend-specific files
+backend/.env
+backend/dist/
+
+# Ignore frontend-specific files
+frontend/.env
+frontend/dist/
