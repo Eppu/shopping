@@ -1,39 +1,64 @@
-// src/components/SignIn.js
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
+import { auth } from '@/firebase/firebase';
 
-const SignIn = () => {
+export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert('Sign-in successful!');
     } catch (error) {
-      alert(error);
+      console.error('Error when signing in', error);
     }
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button onClick={handleSignIn}>Sign In</button>
-    </div>
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardDescription>
+          Enter your email below to login to your account.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        <div className="grid gap-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full" onClick={handleSignIn}>
+          Sign in
+        </Button>
+      </CardFooter>
+    </Card>
   );
-};
-
-export default SignIn;
+}
