@@ -4,6 +4,8 @@ import { SignIn } from '@/components/SignIn';
 import { SignUp } from '@/components/SignUp';
 import List from '@/components/List';
 import { useState } from 'react';
+import CtaButton from '@/components/CtaButton';
+import CreateShoppingList from '@/components/AddShoppingListButton';
 
 const HomePage = () => {
   const { user } = useUser();
@@ -11,10 +13,29 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="p-4 bg-gray-800 text-white">Header</header>
-      <main className="flex-1 overflow-auto">
-        <List />
-      </main>
+      <header className="p-4 bg-gray-800 text-white flex justify-between">
+        Header
+        {user ? (
+          <button onClick={() => auth.signOut()}>Sign Out</button>
+        ) : (
+          <>
+            <button
+              onClick={() => setIsSignIn((prev) => !prev)}
+              className="mb-4"
+            >
+              {isSignIn ? 'Sign Up' : 'Sign In'}
+            </button>
+            {isSignIn ? <SignIn /> : <SignUp />}
+          </>
+        )}
+      </header>
+
+      {user && (
+        <main className="flex-1 overflow-auto">
+          {/* <CreateShoppingList /> */}
+          <List />
+        </main>
+      )}
     </div>
     // <main className="mx-auto max-w-screen-xl flex flex-col max-h-screen px-4 pt-10 sm:px-6 sm:pt-24 lg:px-8">
     //   <section className="px-4 sm:px-6 lg:px-8 mb-6">

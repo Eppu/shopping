@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Plus } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,20 +20,50 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { ShoppingListSelector } from './ShoppingListSelector';
+
+import { getShoppingListsForCurrentUser } from '@/utils/FirebaseFunctions';
+
 export default function List() {
+  const [lists, setLists] = useState<{ id: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const getUserLists = async () => {
+    try {
+      const lists = await getShoppingListsForCurrentUser();
+      console.log('Lists:', lists);
+      setLists(lists);
+    } catch (error) {
+      console.error('Error getting shopping lists:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      getUserLists();
+    } catch (error) {
+      console.error('Error getting shopping lists:', error);
+    }
+  }, []);
+
   return (
     <Card className="xl:col-span-2 ">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
-          <CardTitle>Transactions</CardTitle>
-          <CardDescription>
+          <div className="flex items-center  gap-1">
+            <CardTitle>Ostoslista</CardTitle>
+            <ShoppingListSelector />
+          </div>
+          {/* <CardDescription>
             Recent transactions from your store.
-          </CardDescription>
+          </CardDescription> */}
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
           <Link to="#">
-            View All
-            <ArrowUpRight className="h-4 w-4" />
+            Lisää uusi
+            <Plus className="h-4 w-4" />
           </Link>
         </Button>
       </CardHeader>
