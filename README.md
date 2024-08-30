@@ -1,4 +1,5 @@
-# React + TypeScript + Vite
+## 🚧 This project is still under construction, so `main` shouldn't be treated as a stable branch yet. 🚧
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
