@@ -24,36 +24,45 @@ import { ShoppingListSelector } from './ShoppingListSelector';
 
 import { getShoppingListsForCurrentUser } from '@/utils/FirebaseFunctions';
 
+import { useShoppingList } from '@/context/ShoppingListContext';
+
 export default function List() {
   const [lists, setLists] = useState<{ id: string }[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  const getUserLists = async () => {
-    try {
-      const lists = await getShoppingListsForCurrentUser();
-      console.log('Lists:', lists);
-      setLists(lists);
-    } catch (error) {
-      console.error('Error getting shopping lists:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const getUserLists = async () => {
+  //   try {
+  //     const lists = await getShoppingListsForCurrentUser();
+  //     console.log('Lists:', lists);
+  //     setLists(lists);
+  //   } catch (error) {
+  //     console.error('Error getting shopping lists:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    try {
-      getUserLists();
-    } catch (error) {
-      console.error('Error getting shopping lists:', error);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     getUserLists();
+  //   } catch (error) {
+  //     console.error('Error getting shopping lists:', error);
+  //   }
+  // }, []);
+
+  const { shoppingLists, selectedShoppingList, loading } = useShoppingList();
+  console.log('shoppingLists', shoppingLists);
+  console.log('selectedShoppingList', selectedShoppingList);
+  console.log('loading', loading);
+
+  // console.log('lists', lists);
 
   return (
     <Card className="xl:col-span-2 ">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <div className="flex items-center  gap-1">
-            <CardTitle>Ostoslista</CardTitle>
+            <CardTitle>{selectedShoppingList.name}</CardTitle>
             <ShoppingListSelector />
           </div>
           {/* <CardDescription>
