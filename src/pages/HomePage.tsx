@@ -1,7 +1,7 @@
 import { useUser } from '../context/AuthContext';
 import { auth } from '../firebase/firebase';
-import { SignIn } from '@/components/SignIn';
-import { SignUp } from '@/components/SignUp';
+import SignIn from '@/components/SignIn';
+import SignUp from '@/components/SignUp';
 import List from '@/components/List';
 import { useState } from 'react';
 import CtaButton from '@/components/CtaButton';

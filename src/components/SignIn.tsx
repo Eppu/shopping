@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebase/firebase';
 
-export function SignIn() {
+export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
