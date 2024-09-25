@@ -1,6 +1,7 @@
 // src/context/ShoppingListContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getShoppingListsForCurrentUser } from '../utils/FirebaseFunctions';
+import { useUser } from './AuthContext';
 
 // Create the context
 const ShoppingListContext = createContext<{
@@ -24,7 +25,10 @@ export const ShoppingListProvider = ({ children }: Props) => {
   const [selectedShoppingList, setSelectedShoppingList] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  const { user } = useUser();
+
   useEffect(() => {
+    console.log('useEffect in ShoppingListProvider');
     const fetchLists = async () => {
       try {
         const lists = await getShoppingListsForCurrentUser();
@@ -38,9 +42,10 @@ export const ShoppingListProvider = ({ children }: Props) => {
         setLoading(false);
       }
     };
-
-    fetchLists();
-  }, []);
+    if (user) {
+      fetchLists();
+    }
+  }, [user]);
 
   return (
     <ShoppingListContext.Provider

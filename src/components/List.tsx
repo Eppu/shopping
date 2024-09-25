@@ -22,41 +22,19 @@ import {
 
 import { ShoppingListSelector } from './ShoppingListSelector';
 
-import { getShoppingListsForCurrentUser } from '@/utils/FirebaseFunctions';
-
 import { useShoppingList } from '@/context/ShoppingListContext';
 
 export default function List() {
   const [lists, setLists] = useState<{ id: string }[]>([]);
-  // const [loading, setLoading] = useState(true);
-
-  // const getUserLists = async () => {
-  //   try {
-  //     const lists = await getShoppingListsForCurrentUser();
-  //     console.log('Lists:', lists);
-  //     setLists(lists);
-  //   } catch (error) {
-  //     console.error('Error getting shopping lists:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   try {
-  //     getUserLists();
-  //   } catch (error) {
-  //     console.error('Error getting shopping lists:', error);
-  //   }
-  // }, []);
 
   const { shoppingLists, selectedShoppingList, loading } = useShoppingList();
   console.log('shoppingLists', shoppingLists);
   console.log('selectedShoppingList', selectedShoppingList);
   console.log('loading', loading);
 
-  // console.log('lists', lists);
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Card className="xl:col-span-2 ">
       <CardHeader className="flex flex-row items-center">
