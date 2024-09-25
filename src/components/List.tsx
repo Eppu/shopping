@@ -1,16 +1,8 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Plus } from 'lucide-react';
-
-import { Badge } from '@/components/ui/badge';
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import {
   Table,
   TableBody,
@@ -20,24 +12,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import ListRow from './ListRow';
+
 import { ShoppingListSelector } from './ShoppingListSelector';
 
 import { useShoppingList } from '@/context/ShoppingListContext';
 
-import {
-  addItemToList,
-  setItemPurchasedStatus,
-} from '@/utils/FirebaseFunctions';
+import { addItemToList } from '@/utils/FirebaseFunctions';
 
 export default function List() {
-  const [lists, setLists] = useState<{ id: string }[]>([]);
-
   const { shoppingLists, selectedShoppingList, loading, items } =
     useShoppingList();
   console.log('shoppingLists', shoppingLists);
-  console.log('selectedShoppingList', selectedShoppingList);
-  console.log('loading', loading);
-  console.log('items in List', items);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -50,9 +36,6 @@ export default function List() {
             <CardTitle>{selectedShoppingList.name}</CardTitle>
             <ShoppingListSelector />
           </div>
-          {/* <CardDescription>
-            Recent transactions from your store.
-          </CardDescription> */}
         </div>
         <Button
           asChild
@@ -73,63 +56,31 @@ export default function List() {
           <TableHeader>
             <TableRow>
               <TableHead>Tavara</TableHead>
-              <TableHead className="hidden xl:table-column">Type</TableHead>
-              <TableHead className="hidden xl:table-column">Status</TableHead>
-              <TableHead className="hidden xl:table-column">Date</TableHead>
               <TableHead className="text-right">Ostettu</TableHead>
+              <TableHead className="text-right" />{' '}
+              {/* Empty column for actions */}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items &&
+            {items.length !== 0 ? (
               items.map((item) => (
-                <TableRow
+                <ListRow
                   key={item.id}
-                  onClick={() => {
-                    setItemPurchasedStatus(
-                      selectedShoppingList.id,
-                      item.id,
-                      !item.purchased
-                    );
-                  }}
-                >
-                  <TableCell>
-                    <div className="font-medium">{item.name}</div>
-                    <div className="hidden text-sm text-muted-foreground md:inline">
-                      {item.addedBy}
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden xl:table-column">Sale</TableCell>
-                  <TableCell className="hidden xl:table-column">
-                    <Badge className="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                    {item.createdAt && item.createdAt.seconds}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {item.purchased ? '✅' : '-'}
-                  </TableCell>
-                </TableRow>
-              ))}
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Liam Johnson</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  liam@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-23
-              </TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
+                  id={item.id}
+                  purchased={item.purchased}
+                  name={item.name}
+                  addedBy={item.addedBy}
+                  createdAt={item.createdAt}
+                  shoppingListId={selectedShoppingList.id}
+                />
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center">
+                  No items found
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>

@@ -4,6 +4,7 @@ import {
   serverTimestamp,
   arrayUnion,
   doc,
+  deleteDoc,
   updateDoc,
   getDocs,
   query,
@@ -46,6 +47,14 @@ export async function addItemToList(
     addedBy: user.uid,
     createdAt: serverTimestamp(),
   });
+}
+
+export async function deleteItemFromList(listId: string, itemId: string) {
+  const itemRef = doc(firestore, 'shoppingLists', listId, 'items', itemId);
+
+  console.log('got item ref', itemRef);
+
+  await deleteDoc(itemRef);
 }
 
 export async function shareShoppingList(

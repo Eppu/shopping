@@ -1,5 +1,5 @@
 // src/components/CreateShoppingList.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 // import { firestore, auth } from '../firebase/firebase';
 import { createShoppingList } from '@/utils/FirebaseFunctions';
 

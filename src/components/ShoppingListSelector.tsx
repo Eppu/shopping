@@ -1,5 +1,4 @@
 import {
-  CreditCard,
   Mail,
   MessageSquare,
   Plus,
