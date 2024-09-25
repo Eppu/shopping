@@ -8,6 +8,7 @@ import {
   getDocs,
   query,
   where,
+  onSnapshot,
 } from 'firebase/firestore';
 import { firestore, auth } from '../firebase/firebase';
 
@@ -76,5 +77,71 @@ export async function getShoppingListsForCurrentUser() {
     ...doc.data(),
   }));
 
+  //   const lists = await Promise.all(
+  //     querySnapshot.docs.map(async (doc) => {
+  //       const listData = { id: doc.id, ...doc.data() };
+
+  //       // Fetch items for each shopping list
+  //       const itemsRef = collection(firestore, 'shoppingLists', doc.id, 'items');
+  //       const itemsSnapshot = await getDocs(itemsRef);
+  //       const items = itemsSnapshot.docs.map((itemDoc) => ({
+  //         id: itemDoc.id,
+  //         ...itemDoc.data(),
+  //       }));
+
+  //       return { ...listData, items };
+  //     })
+  //   );
+
+  //   return lists;
+  // }
+
   return lists;
+}
+
+export async function getItemsForShoppingList(listId: string) {
+  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const querySnapshot = await getDocs(itemsRef);
+
+  const items = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return items;
+}
+
+// src/firebaseFunctions.js
+
+// Function to listen for real-time updates on items for a specific list
+export function subscribeToItemsForList(
+  listId: string,
+  callback: (items: any[]) => void
+) {
+  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+
+  return onSnapshot(itemsRef, (snapshot) => {
+    const items = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    callback(items); // Pass the updated items to the callback function
+  });
+}
+
+// Function to mark an item as purchased
+export async function setItemPurchasedStatus(
+  listId: string,
+  itemId: string,
+  purchased: boolean = true
+) {
+  const itemRef = doc(firestore, 'shoppingLists', listId, 'items', itemId);
+
+  try {
+    await updateDoc(itemRef, {
+      purchased: purchased, // Toggle the purchased status
+    });
+  } catch (error) {
+    console.error('Error updating item: ', error);
+  }
 }

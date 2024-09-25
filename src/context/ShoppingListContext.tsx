@@ -1,6 +1,10 @@
 // src/context/ShoppingListContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getShoppingListsForCurrentUser } from '../utils/FirebaseFunctions';
+import {
+  getShoppingListsForCurrentUser,
+  getItemsForShoppingList,
+  subscribeToItemsForList,
+} from '../utils/FirebaseFunctions';
 import { useUser } from './AuthContext';
 
 // Create the context
@@ -10,12 +14,14 @@ const ShoppingListContext = createContext<{
   selectedShoppingList: any;
   setSelectedShoppingList: (list: any) => void;
   loading: boolean;
+  items: any[];
 }>({
   shoppingLists: [],
   setShoppingLists: () => {},
   selectedShoppingList: null,
   setSelectedShoppingList: () => {},
   loading: true,
+  items: [],
 });
 
 type Props = { children: React.ReactNode };
@@ -24,6 +30,7 @@ export const ShoppingListProvider = ({ children }: Props) => {
   const [shoppingLists, setShoppingLists] = useState<{ id: string }[]>([]);
   const [selectedShoppingList, setSelectedShoppingList] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<any[]>([]);
 
   const { user } = useUser();
 
@@ -47,6 +54,25 @@ export const ShoppingListProvider = ({ children }: Props) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!selectedShoppingList) {
+      return;
+    }
+
+    setLoading(true);
+
+    const unsubscribe = subscribeToItemsForList(
+      selectedShoppingList.id,
+      (items) => {
+        setItems(items);
+        setLoading(false);
+      }
+    );
+
+    // Clean up the subscription
+    return () => unsubscribe();
+  }, [selectedShoppingList]);
+
   return (
     <ShoppingListContext.Provider
       value={{
@@ -54,6 +80,7 @@ export const ShoppingListProvider = ({ children }: Props) => {
         setShoppingLists,
         selectedShoppingList,
         setSelectedShoppingList,
+        items,
         loading,
       }}
     >
