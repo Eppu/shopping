@@ -30,7 +30,7 @@ export function ShoppingListSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="px-0 pt-3">
+        <Button variant="ghost" className="px-1 pt-3">
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
