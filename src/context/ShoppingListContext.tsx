@@ -37,6 +37,7 @@ export const ShoppingListProvider = ({ children }: Props) => {
   useEffect(() => {
     console.log('useEffect in ShoppingListProvider');
     const fetchLists = async () => {
+      setLoading(true);
       try {
         const lists = await getShoppingListsForCurrentUser();
         setShoppingLists(lists);
@@ -51,6 +52,11 @@ export const ShoppingListProvider = ({ children }: Props) => {
     };
     if (user) {
       fetchLists();
+    } else {
+      setShoppingLists([]);
+      setSelectedShoppingList(null);
+      setItems([]);
+      setLoading(false);
     }
   }, [user]);
 

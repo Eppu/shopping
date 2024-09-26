@@ -28,6 +28,9 @@ export default function List() {
   if (loading) {
     return <div>Loading...</div>;
   }
+  if (!selectedShoppingList) {
+    return <div>No shopping list selected</div>;
+  }
   return (
     <Card className="xl:col-span-2 ">
       <CardHeader className="flex flex-row items-center">
