@@ -4,8 +4,8 @@ import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
 import List from '@/components/List';
 import { useState } from 'react';
-import CtaButton from '@/components/CtaButton';
-import CreateShoppingList from '@/components/AddShoppingListButton';
+
+import { Toaster } from '@/components/ui/sonner';
 
 const HomePage = () => {
   const { user } = useUser();
@@ -34,6 +34,7 @@ const HomePage = () => {
         <main className="flex-1 overflow-auto">
           {/* <CreateShoppingList /> */}
           <List />
+          <Toaster closeButton richColors position="bottom-center" />
         </main>
       )}
     </div>

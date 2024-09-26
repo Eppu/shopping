@@ -154,3 +154,12 @@ export async function setItemPurchasedStatus(
     console.error('Error updating item: ', error);
   }
 }
+
+export async function removeAllItemsFromList(listId: string) {
+  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const querySnapshot = await getDocs(itemsRef);
+
+  querySnapshot.docs.forEach(async (doc) => {
+    await deleteDoc(doc.ref);
+  });
+}
