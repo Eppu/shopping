@@ -13,6 +13,8 @@ import {
 } from 'firebase/firestore';
 import { firestore, auth } from '../firebase/firebase';
 
+import { PermissionTypes, ShoppingLists, Items } from '@/lib/types';
+
 export async function createShoppingList(name: string) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
@@ -23,7 +25,7 @@ export async function createShoppingList(name: string) {
     createdAt: serverTimestamp(),
     sharedWith: [],
     permissions: {
-      [user.uid]: 'edit',
+      [user.uid]: PermissionTypes.Edit,
     },
   });
 
@@ -105,7 +107,7 @@ export async function getShoppingListsForCurrentUser() {
   //   return lists;
   // }
 
-  return lists;
+  return lists as ShoppingLists;
 }
 
 export async function getItemsForShoppingList(listId: string) {
@@ -125,7 +127,7 @@ export async function getItemsForShoppingList(listId: string) {
 // Function to listen for real-time updates on items for a specific list
 export function subscribeToItemsForList(
   listId: string,
-  callback: (items: any[]) => void
+  callback: (items: Items) => void
 ) {
   const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
 
@@ -134,7 +136,7 @@ export function subscribeToItemsForList(
       id: doc.id,
       ...doc.data(),
     }));
-    callback(items); // Pass the updated items to the callback function
+    callback(items as Items); // Pass the updated items to the callback function
   });
 }
 

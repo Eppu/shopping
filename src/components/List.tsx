@@ -67,7 +67,7 @@ export default function List() {
     return () => {
       toast.dismiss();
     };
-  }, [allItemsPurchased, selectedShoppingList.id]);
+  }, [allItemsPurchased, selectedShoppingList]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -76,6 +76,8 @@ export default function List() {
   if (!selectedShoppingList) {
     return <div>No shopping list selected</div>;
   }
+
+  console.log('items', items);
 
   return (
     <Card className="">
