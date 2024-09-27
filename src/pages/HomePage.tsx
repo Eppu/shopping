@@ -13,6 +13,13 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col h-screen">
+      <Toaster
+        closeButton
+        richColors
+        position="bottom-center"
+        expand
+        visibleToasts={9}
+      />
       <header className="p-4 bg-gray-800 text-white flex justify-between">
         Header
         {user ? (
@@ -34,7 +41,6 @@ const HomePage = () => {
         <main className="flex-1 overflow-auto">
           {/* <CreateShoppingList /> */}
           <List />
-          <Toaster closeButton richColors position="bottom-center" />
         </main>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -35,32 +36,38 @@ export default function List() {
   const allItemsPurchased =
     items.length > 0 && items.every((item) => item.purchased);
 
-  if (allItemsPurchased) {
-    const allItemsPurchasedToast = toast.success(
-      <div className="flex w-full h-16 items-center justify-between gap-2">
-        <div>Jee! Kaikki ostettu.</div>
-        <div>
-          <Button
-            variant={'destructive'}
-            onClick={() => {
-              removeAllItemsFromList(selectedShoppingList.id);
-              toast.dismiss(allItemsPurchasedToast);
-            }}
-            className="gap-2"
-          >
-            <>
-              <p className="font-semibold">Tyhjennä lista</p>
+  useEffect(() => {
+    if (allItemsPurchased) {
+      const allItemsPurchasedToast = toast.success(
+        <div className="flex w-full h-16 items-center justify-between gap-2">
+          <div>Jee! Kaikki ostettu.</div>
+          <div>
+            <Button
+              variant={'destructive'}
+              onClick={() => {
+                removeAllItemsFromList(selectedShoppingList.id);
+                toast.dismiss(allItemsPurchasedToast);
+              }}
+              className="gap-2"
+            >
+              <>
+                <p className="font-semibold">Tyhjennä lista</p>
 
-              <Trash2 className="h-4 w-4" />
-            </>
-          </Button>
-        </div>
-      </div>,
-      {
-        duration: 600000,
-      }
-    );
-  }
+                <Trash2 className="h-4 w-4" />
+              </>
+            </Button>
+          </div>
+        </div>,
+        {
+          duration: 60000,
+        }
+      );
+    }
+
+    return () => {
+      toast.dismiss();
+    };
+  }, [allItemsPurchased, selectedShoppingList.id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -71,7 +78,7 @@ export default function List() {
   }
 
   return (
-    <Card className="xl:col-span-2 ">
+    <Card className="">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <div className="flex items-center  gap-1">
