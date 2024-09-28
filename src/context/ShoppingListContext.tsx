@@ -2,7 +2,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import {
   getShoppingListsForCurrentUser,
-  getItemsForShoppingList,
   subscribeToItemsForList,
   fetchUserSharedLists,
 } from '../utils/FirebaseFunctions';
@@ -16,7 +15,7 @@ const ShoppingListContext = createContext<{
   setShoppingLists: (lists: ShoppingList[]) => void;
   sharedShoppingLists: ShoppingList[];
   selectedShoppingList: ShoppingList | null;
-  setSelectedShoppingList: (list: any) => void;
+  setSelectedShoppingList: (list: ShoppingList) => void;
   loading: boolean;
   items: Item[];
 }>({
