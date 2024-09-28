@@ -28,16 +28,22 @@ import {
 import { toast } from 'sonner';
 
 export default function List() {
-  const { shoppingLists, selectedShoppingList, loading, items } =
-    useShoppingList();
+  const {
+    shoppingLists,
+    sharedShoppingLists,
+    selectedShoppingList,
+    loading,
+    items,
+  } = useShoppingList();
   console.log('shoppingLists', shoppingLists);
+  console.log('sharedShoppingLists', sharedShoppingLists);
 
   // check if all items are purchased
   const allItemsPurchased =
     items.length > 0 && items.every((item) => item.purchased);
 
   useEffect(() => {
-    if (allItemsPurchased) {
+    if (allItemsPurchased && selectedShoppingList) {
       const allItemsPurchasedToast = toast.success(
         <div className="flex w-full h-16 items-center justify-between gap-2">
           <div>Jee! Kaikki ostettu.</div>
@@ -118,6 +124,7 @@ export default function List() {
             {items.length !== 0 ? (
               items.map((item) => (
                 <ListRow
+                  //TODO: Just pass the item object
                   key={item.id}
                   id={item.id}
                   purchased={item.purchased}
@@ -125,6 +132,7 @@ export default function List() {
                   addedBy={item.addedBy}
                   createdAt={item.createdAt}
                   shoppingListId={selectedShoppingList.id}
+                  quantity={item.quantity}
                 />
               ))
             ) : (

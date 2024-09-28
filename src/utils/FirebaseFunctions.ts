@@ -15,6 +15,8 @@ import { firestore, auth } from '../firebase/firebase';
 
 import { PermissionTypes, ShoppingLists, Items } from '@/lib/types';
 
+import * as EmailValidator from 'email-validator';
+
 export async function createShoppingList(name: string) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
@@ -164,4 +166,36 @@ export async function removeAllItemsFromList(listId: string) {
   querySnapshot.docs.forEach(async (doc) => {
     await deleteDoc(doc.ref);
   });
+}
+
+// Adds a user to the sharedWith array based on their email
+// Ideally we'd do this based on the user's ID, but for simplicity we're using email here
+// I might change this later
+export async function addUserToShoppingList(listId: string, email: string) {
+  if (!EmailValidator.validate(email)) {
+    throw new Error('Invalid email address');
+  }
+
+  const listRef = doc(firestore, 'shoppingLists', listId);
+
+  await updateDoc(listRef, {
+    sharedWith: arrayUnion(email),
+  });
+}
+
+export async function fetchUserSharedLists() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not authenticated');
+
+  const listsRef = collection(firestore, 'shoppingLists');
+  const querySnapshot = await getDocs(
+    query(listsRef, where('sharedWith', 'array-contains', user.email))
+  );
+
+  const lists = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return lists as ShoppingLists;
 }

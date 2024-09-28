@@ -17,16 +17,19 @@ import { MoreHorizontal, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-type Props = {
+import { Item } from '@/lib/types';
+
+type Props = Item & {
   shoppingListId: string;
-  id: string;
-  purchased: boolean;
-  name: string;
-  addedBy: string;
-  createdAt: {
-    seconds: number;
-    milliseconds: number;
-  };
+
+  // id: string;
+  // purchased: boolean;
+  // name: string;
+  // addedBy: string;
+  // createdAt: {
+  //   seconds: number;
+  //   milliseconds: number;
+  // };
 };
 
 export default function ListRow({
