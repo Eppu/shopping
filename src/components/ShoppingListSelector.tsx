@@ -26,7 +26,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import { SharedWithIndicator } from './SharedWithIndicator';
+
+import { useShoppingList } from '@/context/ShoppingListContext';
+
 export function ShoppingListSelector() {
+  const { shoppingLists, sharedShoppingLists, selectedShoppingList } =
+    useShoppingList();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,21 +42,25 @@ export function ShoppingListSelector() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Omat ostoslistat</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          {/* <DropdownMenuItem>
-            <CreditCard className="mr-2 h-4 w-4" />
-            <span>Billing</span>
-          </DropdownMenuItem> */}
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-          </DropdownMenuItem>
+          {shoppingLists.map((list) => (
+            <DropdownMenuItem
+              key={list.id}
+              // active={selectedShoppingList?.id === list.id}
+              className={
+                selectedShoppingList?.id === list.id
+                  ? 'font-bold bg-gray-50'
+                  : ''
+              }
+            >
+              <span>{list.name}</span>
+              {list.sharedWith.length > 0 && (
+                <SharedWithIndicator sharedWith={list.sharedWith} />
+              )}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
         <DropdownMenuLabel>Sinulle jaetut</DropdownMenuLabel>
         <DropdownMenuGroup>
