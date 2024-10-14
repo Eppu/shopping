@@ -77,12 +77,13 @@ export default function ListRow({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Toiminnot</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent the click event from bubbling up to the row
                 deleteItemFromList(shoppingListId, id);
               }}
-              className="text-red-600 hover:text-red-700"
+              className="text-red-600 hover:text-red-700 cursor-pointer"
             >
               <Trash2 className="mr-2 h-4 w-4" />
               <span>Poista</span>

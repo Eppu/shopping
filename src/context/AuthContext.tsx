@@ -35,7 +35,8 @@ export const UserDataProvider = ({ children }: Props) => {
 
   return (
     <UserDataContext.Provider value={{ user }}>
-      {isLoading ? <LoadingPage /> : children}
+      {/* {isLoading ? <LoadingPage /> : children} */}
+      {isLoading ? null : children}
     </UserDataContext.Provider>
   );
 };

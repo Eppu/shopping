@@ -43,14 +43,15 @@ export const ShoppingListProvider = ({ children }: Props) => {
   const { user } = useUser();
 
   useEffect(() => {
-    console.log('useEffect in ShoppingListProvider');
     const fetchLists = async () => {
       setLoading(true);
       try {
         const lists = await getShoppingListsForCurrentUser();
         setShoppingLists(lists);
+
         const sharedLists = await fetchUserSharedLists();
         setSharedShoppingLists(sharedLists);
+
         if (lists.length > 0) {
           setSelectedShoppingList(lists[0]);
         } else if (sharedLists.length > 0) {

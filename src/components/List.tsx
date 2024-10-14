@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Minus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import EmojiLoader from '@/components/EmojiLoader';
+import { Input } from '@/components/ui/input';
 
 import {
   Table,
@@ -42,6 +44,10 @@ export default function List() {
   const allItemsPurchased =
     items.length > 0 && items.every((item) => item.purchased);
 
+  const [newItemName, setNewItemName] = useState('');
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (allItemsPurchased && selectedShoppingList) {
       const allItemsPurchasedToast = toast.success(
@@ -75,12 +81,18 @@ export default function List() {
     };
   }, [allItemsPurchased, selectedShoppingList]);
 
+  useEffect(() => {
+    if (isAddMenuOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isAddMenuOpen]);
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <EmojiLoader />;
   }
 
   if (!selectedShoppingList) {
-    return <div>No shopping list selected</div>;
+    return <div>Ostolistaa ei ole valittu.</div>;
   }
 
   console.log('items', items);
@@ -98,13 +110,15 @@ export default function List() {
           asChild
           size="sm"
           className="ml-auto gap-1"
-          onClick={() =>
-            addItemToList(selectedShoppingList.id, 'jokin toinen tavara')
-          }
+          onClick={() => setIsAddMenuOpen(!isAddMenuOpen)}
         >
           <Link to="#">
-            Lisää uusi
-            <Plus className="h-4 w-4" />
+            Uusi tavara
+            {isAddMenuOpen ? (
+              <Minus className="h-4 w-4" />
+            ) : (
+              <Plus className="h-4 w-4" />
+            )}
           </Link>
         </Button>
       </CardHeader>
@@ -119,7 +133,44 @@ export default function List() {
               <TableHead className="text-right" />
               {/* Empty column for actions */}
             </TableRow>
+            {isAddMenuOpen && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <div className="flex gap-4">
+                    <Input
+                      ref={inputRef}
+                      placeholder="Lisää uusi tavara"
+                      value={newItemName}
+                      onChange={(e) => setNewItemName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          addItemToList(
+                            selectedShoppingList.id,
+                            newItemName.trim()
+                          );
+                          setNewItemName('');
+                        }
+                      }}
+                    />
+                    <Button
+                      className="w-16"
+                      onClick={() => {
+                        addItemToList(
+                          selectedShoppingList.id,
+                          newItemName.trim()
+                        );
+                        setIsAddMenuOpen(false);
+                        setNewItemName('');
+                      }}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
           </TableHeader>
+
           <TableBody>
             {items.length !== 0 ? (
               items.map((item) => (

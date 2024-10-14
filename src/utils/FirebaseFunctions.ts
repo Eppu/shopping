@@ -42,6 +42,10 @@ export async function addItemToList(
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
 
+  if (!itemName || itemName.trim() === '') {
+    throw new Error('Item name cannot be empty');
+  }
+
   const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
 
   await addDoc(itemsRef, {
