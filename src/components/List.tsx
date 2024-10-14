@@ -98,7 +98,7 @@ export default function List() {
   console.log('items', items);
 
   return (
-    <Card className="">
+    <Card>
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <div className="flex items-center  gap-1">

@@ -3,6 +3,7 @@ import {
   addDoc,
   serverTimestamp,
   arrayUnion,
+  arrayRemove,
   doc,
   deleteDoc,
   updateDoc,
@@ -179,11 +180,23 @@ export async function addUserToShoppingList(listId: string, email: string) {
   if (!EmailValidator.validate(email)) {
     throw new Error('Invalid email address');
   }
+  console.log('adding user to list', email);
 
   const listRef = doc(firestore, 'shoppingLists', listId);
 
   await updateDoc(listRef, {
     sharedWith: arrayUnion(email),
+  });
+}
+
+export async function removeUserFromShoppingList(
+  listId: string,
+  email: string
+) {
+  const listRef = doc(firestore, 'shoppingLists', listId);
+
+  await updateDoc(listRef, {
+    sharedWith: arrayRemove(email),
   });
 }
 
@@ -202,4 +215,20 @@ export async function fetchUserSharedLists() {
   }));
 
   return lists as ShoppingLists;
+}
+
+export function onSharedUsersChange(
+  listId: string,
+  callback: (sharedWith: string[]) => void
+) {
+  const listRef = doc(firestore, 'shoppingLists', listId);
+
+  return onSnapshot(listRef, (docSnapshot) => {
+    if (docSnapshot.exists()) {
+      const listData = docSnapshot.data();
+      callback(listData.sharedWith || []);
+    } else {
+      callback([]);
+    }
+  });
 }

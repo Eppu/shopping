@@ -51,7 +51,7 @@ const HomePage = () => {
         </header>
 
         {user && (
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto w-full lg:max-w-4xl lg:mx-auto">
             {/* <CreateShoppingList /> */}
             <List />
           </main>
