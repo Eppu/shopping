@@ -17,10 +17,16 @@ import ShareListDialogContent from './ShareListDialogContent';
 import { SharedWithIndicator } from './SharedWithIndicator';
 
 import { useShoppingList } from '@/context/ShoppingListContext';
+import AddListDialogContent from './AddListDialogContent';
 
 export function ShoppingListSelector() {
-  const { shoppingLists, sharedShoppingLists, selectedShoppingList } =
-    useShoppingList();
+  const {
+    shoppingLists,
+    sharedShoppingLists,
+    selectedShoppingList,
+    setSelectedShoppingList,
+  } = useShoppingList();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,6 +47,10 @@ export function ShoppingListSelector() {
                   ? 'font-bold bg-gray-50'
                   : ''
               }
+              onSelect={(e) => {
+                e.preventDefault();
+                setSelectedShoppingList(list);
+              }}
             >
               <span>{list.name}</span>
               {list.sharedWith.length > 0 && (
@@ -81,11 +91,16 @@ export function ShoppingListSelector() {
 
         {/* Settings */}
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Plus className="mr-2 h-4 w-4" />
-            <span>Uusi ostoslista</span>
-            {/* <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
+          <Dialog>
+            <DialogTrigger asChild>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <Plus className="mr-2 h-4 w-4" />
+                <span>Uusi ostoslista</span>
+                {/* <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut> */}
+              </DropdownMenuItem>
+            </DialogTrigger>
+            <AddListDialogContent />
+          </Dialog>
           <Dialog>
             <DialogTrigger asChild>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>

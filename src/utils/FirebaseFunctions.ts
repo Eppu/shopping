@@ -14,7 +14,12 @@ import {
 } from 'firebase/firestore';
 import { firestore, auth } from '../firebase/firebase';
 
-import { PermissionTypes, ShoppingLists, Items } from '@/lib/types';
+import {
+  PermissionTypes,
+  ShoppingList,
+  ShoppingLists,
+  Items,
+} from '@/lib/types';
 
 import * as EmailValidator from 'email-validator';
 
@@ -32,7 +37,18 @@ export async function createShoppingList(name: string) {
     },
   });
 
-  return listRef.id;
+  const newList: ShoppingList = {
+    id: listRef.id,
+    name,
+    ownerId: user.uid,
+    createdAt: serverTimestamp(),
+    sharedWith: [],
+    permissions: {
+      [user.uid]: PermissionTypes.Edit,
+    },
+  };
+
+  return newList;
 }
 
 export async function addItemToList(
