@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
@@ -18,6 +19,7 @@ import { SharedWithIndicator } from './SharedWithIndicator';
 
 import { useShoppingList } from '@/context/ShoppingListContext';
 import AddListDialogContent from './AddListDialogContent';
+import ListActions from './ListActions';
 
 export function ShoppingListSelector() {
   const {
@@ -42,20 +44,26 @@ export function ShoppingListSelector() {
             <DropdownMenuItem
               key={list.id}
               // active={selectedShoppingList?.id === list.id}
-              className={
-                selectedShoppingList?.id === list.id
-                  ? 'font-bold bg-gray-50'
-                  : ''
-              }
+              className={`cursor-pointer
+                ${
+                  selectedShoppingList?.id === list.id
+                    ? 'font-bold bg-gray-50'
+                    : ''
+                }
+                `}
               onSelect={(e) => {
                 e.preventDefault();
                 setSelectedShoppingList(list);
               }}
             >
               <span>{list.name}</span>
-              {list.sharedWith.length > 0 && (
-                <SharedWithIndicator sharedWith={list.sharedWith} />
-              )}
+              <DropdownMenuShortcut className="flex items-center opacity-100 tracking-normal font-normal">
+                {list.sharedWith.length > 0 && (
+                  <SharedWithIndicator sharedWith={list.sharedWith} />
+                )}
+
+                <ListActions shoppingListId={list.id} />
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

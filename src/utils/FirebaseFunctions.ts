@@ -51,6 +51,12 @@ export async function createShoppingList(name: string) {
   return newList;
 }
 
+export async function deleteShoppingList(listId: string) {
+  const listRef = doc(firestore, 'shoppingLists', listId);
+
+  await deleteDoc(listRef);
+}
+
 export async function addItemToList(
   listId: string,
   itemName: string,
