@@ -27,6 +27,7 @@ export default function ShareListDialogContent() {
   const { selectedShoppingList } = useShoppingList();
   const [email, setEmail] = useState('');
   const [sharedWith, setSharedWith] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // This is ugly but works for now. I think I'll need to refactor this to be included in the ShoppingListContext.
   useEffect(() => {
@@ -50,15 +51,15 @@ export default function ShareListDialogContent() {
     if (!selectedShoppingList) {
       return;
     }
-    console.log('adding user to list', email);
 
     if (email) {
+      setIsSubmitting(true);
       try {
         await addUserToShoppingList(selectedShoppingList.id, email);
-        setEmail(''); // Clear the input after adding the email
       } catch (error) {
         console.error('Error adding user to shopping list:', error);
       }
+      setIsSubmitting(false);
     }
   };
 
@@ -87,27 +88,27 @@ export default function ShareListDialogContent() {
         </DialogDescription>
       </DialogHeader>
       <div className="grid gap-4 py-4">
-        {/* <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="email" className="text-right">
-            Email
-          </Label>
-          <Input
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Add email"
-            className="col-span-3"
-          />
-          <Button onClick={handleAddUser}>Add</Button>
-        </div> */}
         <div className="flex w-full max-w-sm items-center space-x-2">
           <Input
             type="email"
             placeholder="Sähköpostiosoite"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter' && !isSubmitting) {
+                handleAddUser();
+                setEmail(''); // Clear the input after adding the email
+              }
+            }}
           />
-          <Button type="submit" onClick={() => handleAddUser()}>
+          <Button
+            type="submit"
+            onClick={() => {
+              handleAddUser();
+              setEmail(''); // Clear the input after adding the email
+            }}
+            disabled={isSubmitting}
+          >
             Lisää
           </Button>
         </div>
@@ -137,22 +138,6 @@ export default function ShareListDialogContent() {
             ))}
           </div>
         </ScrollArea>
-        {/* <div>
-          <h3>Shared with:</h3>
-          <ul>
-            {selectedShoppingList?.sharedWith.map((userEmail) => (
-              <li key={userEmail} className="flex justify-between items-center">
-                <span>{userEmail}</span>
-                <Button
-                  variant="ghost"
-                  onClick={() => handleRemoveUser(userEmail)}
-                >
-                  x
-                </Button> *
-              </li>
-            ))}
-          </ul>
-        </div> */}
       </div>
       <DialogFooter>
         <DialogClose asChild>

@@ -4,6 +4,7 @@ import {
   getShoppingListsForCurrentUser,
   subscribeToItemsForList,
   fetchUserSharedLists,
+  createShoppingList,
 } from '../utils/FirebaseFunctions';
 import { useUser } from './AuthContext';
 
@@ -79,6 +80,18 @@ export const ShoppingListProvider = ({ children }: Props) => {
     }
 
     setLoading(true);
+
+    // fetch shopping lists in case a new list was created
+    const fetchLists = async () => {
+      try {
+        const lists = await getShoppingListsForCurrentUser();
+        setShoppingLists(lists);
+      } catch (error) {
+        console.error('Error fetching shopping lists:', error);
+      }
+    };
+
+    fetchLists();
 
     const unsubscribe = subscribeToItemsForList(
       selectedShoppingList.id,
