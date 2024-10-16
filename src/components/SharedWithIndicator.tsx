@@ -13,20 +13,16 @@ export const SharedWithIndicator = ({
 }: {
   sharedWith: string[];
 }) => {
-  console.log('sharedWith', sharedWith);
   return (
-    <DropdownMenuShortcut className="opacity-100 tracking-normal font-normal">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            {/* Show this if shared with others */}
-            <Users className="mr-2 h-4 w-4" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Jaettu {sharedWith.length} henkilön kanssa</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </DropdownMenuShortcut>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Users className="mr-2 h-4 w-4" />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Jaettu {sharedWith.length} henkilön kanssa</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
