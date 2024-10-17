@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+// TODO: Refactor this component into smaller components
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Minus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,13 @@ export default function List() {
   const [newItemName, setNewItemName] = useState('');
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleAddItem = useCallback(() => {
+    if (selectedShoppingList && newItemName) {
+      addItemToList(selectedShoppingList.id, newItemName.trim());
+      setNewItemName('');
+    }
+  }, [newItemName, selectedShoppingList]);
 
   useEffect(() => {
     if (allItemsPurchased && selectedShoppingList) {
@@ -144,10 +152,7 @@ export default function List() {
                       onChange={(e) => setNewItemName(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                          addItemToList(
-                            selectedShoppingList.id,
-                            newItemName.trim()
-                          );
+                          handleAddItem();
                           setNewItemName('');
                         }
                       }}
@@ -155,10 +160,7 @@ export default function List() {
                     <Button
                       className="w-16"
                       onClick={() => {
-                        addItemToList(
-                          selectedShoppingList.id,
-                          newItemName.trim()
-                        );
+                        handleAddItem();
                         setIsAddMenuOpen(false);
                         setNewItemName('');
                       }}

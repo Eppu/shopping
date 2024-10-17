@@ -119,11 +119,8 @@ export default function ShareListDialogContent() {
               Jaettu käyttäjille:
             </h4>
             {sharedWith.map((userEmail) => (
-              <>
-                <div
-                  key={userEmail}
-                  className="flex justify-between items-center"
-                >
+              <div key={userEmail}>
+                <div className="flex justify-between items-center">
                   <p className="text-sm">{userEmail}</p>
                   <Button
                     variant="ghost"
@@ -134,7 +131,7 @@ export default function ShareListDialogContent() {
                   </Button>
                 </div>
                 <Separator className="my-2" />
-              </>
+              </div>
             ))}
           </div>
         </ScrollArea>
