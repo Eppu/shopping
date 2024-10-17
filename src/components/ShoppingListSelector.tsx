@@ -85,7 +85,9 @@ export function ShoppingListSelector() {
               >
                 <span>{list.name}</span>
                 {list.sharedWith.length > 0 && (
-                  <SharedWithIndicator sharedWith={list.sharedWith} />
+                  <DropdownMenuShortcut className="flex items-center opacity-100 tracking-normal font-normal">
+                    <SharedWithIndicator sharedWith={list.sharedWith} />
+                  </DropdownMenuShortcut>
                 )}
               </DropdownMenuItem>
             ))
