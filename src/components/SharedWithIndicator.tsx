@@ -1,4 +1,3 @@
-import { DropdownMenuShortcut } from '@/components/ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,

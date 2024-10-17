@@ -1,7 +1,6 @@
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from '../firebase/firebase';
-import LoadingPage from '../pages/LoadingPage';
 
 export const UserDataContext = createContext<{
   user: User | null;

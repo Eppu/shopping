@@ -1,7 +1,6 @@
 import {
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -13,8 +12,6 @@ import { Button } from '@/components/ui/button';
 import { useShoppingList } from '@/context/ShoppingListContext';
 import { useState } from 'react';
 import { createShoppingList } from '@/utils/FirebaseFunctions';
-
-import { X } from 'lucide-react';
 
 export default function AddListDialogContent() {
   const { setSelectedShoppingList } = useShoppingList();
