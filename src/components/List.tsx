@@ -31,15 +31,7 @@ import {
 import { toast } from 'sonner';
 
 export default function List() {
-  const {
-    shoppingLists,
-    sharedShoppingLists,
-    selectedShoppingList,
-    loading,
-    items,
-  } = useShoppingList();
-  console.log('shoppingLists', shoppingLists);
-  console.log('sharedShoppingLists', sharedShoppingLists);
+  const { selectedShoppingList, loading, items } = useShoppingList();
 
   // check if all items are purchased
   const allItemsPurchased =
@@ -103,8 +95,6 @@ export default function List() {
     return <div>Ostolistaa ei ole valittu.</div>;
   }
 
-  console.log('items', items);
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center">
@@ -146,6 +136,7 @@ export default function List() {
                 <TableCell colSpan={3}>
                   <div className="flex gap-4">
                     <Input
+                      className="text-base sm:text-sm"
                       ref={inputRef}
                       placeholder="Lisää uusi tavara"
                       value={newItemName}

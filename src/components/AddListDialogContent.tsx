@@ -52,6 +52,7 @@ export default function AddListDialogContent() {
             Nimi
           </Label>
           <Input
+            className="text-base sm:text-sm"
             type="email"
             placeholder="Ostoslista"
             value={name}

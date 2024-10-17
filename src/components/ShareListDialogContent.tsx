@@ -90,6 +90,7 @@ export default function ShareListDialogContent() {
       <div className="grid gap-4 py-4">
         <div className="flex w-full max-w-sm items-center space-x-2">
           <Input
+            className="text-base sm:text-sm"
             type="email"
             placeholder="Sähköpostiosoite"
             value={email}

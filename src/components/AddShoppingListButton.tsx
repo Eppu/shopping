@@ -21,6 +21,7 @@ const CreateShoppingList = () => {
     <div>
       <h2>Create a New Shopping List</h2>
       <input
+        className="text-base sm:text-sm"
         type="text"
         value={listName}
         onChange={(e) => setListName(e.target.value)}
