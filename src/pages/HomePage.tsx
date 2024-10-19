@@ -55,8 +55,8 @@ const HomePage = () => {
         <header className="p-4 bg-gray-800 text-white flex justify-between">
           <a href="/" className="flex gap-1 items-center">
             <div className="flex gap-1 items-center">
-              <img src="/logo.svg" alt="logo" className="h-10" />
-              <h1 className="text-2xl font-poppinsMedium">ostis</h1>
+              <img src="/logo.svg" alt="logo" className="h-6" />
+              <h1 className="text-xl font-poppinsMedium">ostis</h1>
             </div>
           </a>
           {/* Header */}
