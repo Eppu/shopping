@@ -5,41 +5,64 @@ import SignUp from '@/components/SignUp';
 import List from '@/components/List';
 import { useState, useEffect } from 'react';
 import { useShoppingList } from '@/context/ShoppingListContext';
-import { useParams } from 'react-router-dom';
-
+import { useParams, useNavigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
-
 import { Helmet } from 'react-helmet';
 
 const HomePage = () => {
   const { user } = useUser();
   const [isSignIn, setIsSignIn] = useState(true);
-  const { selectedShoppingList, shoppingLists, setSelectedShoppingList } =
-    useShoppingList();
+  const {
+    selectedShoppingList,
+    shoppingLists,
+    // sharedShoppingLists,
+    setSelectedShoppingListById,
+  } = useShoppingList();
   const { listId } = useParams();
+  const navigate = useNavigate();
 
-  // When the user enters the page, check if the listId is in the shoppingLists. If it is, and the currently selected list is not already selected, set it as the selected list
-  // This is kind of messy but it works for now. I should probably refactor this.
+  // This is giga messy but it works for now. It's almost 2am and I couldn't be bothered to refactor it.
+  // I will refactor it later. I promise.
+
+  // This useEffect runs when listId or shoppingLists change
   useEffect(() => {
-    // if there is no listId, but there is a selectedShoppingList, set the listId to the selectedShoppingList id
-    if (!listId && selectedShoppingList) {
-      window.history.pushState(null, '', `/${selectedShoppingList.id}`);
+    if (!shoppingLists.length) {
+      return; // Exit if shopping lists haven't been loaded yet
     }
 
-    if (listId && shoppingLists.length > 0) {
-      const list = shoppingLists.find((list) => list.id === listId);
-      if (list && !selectedShoppingList) {
-        setSelectedShoppingList(list);
+    // Handle the case where no listId is present in the URL
+    if (!listId) {
+      if (selectedShoppingList) {
+        // Redirect to the selectedShoppingList's ID
+        navigate(`/${selectedShoppingList.id}`, { replace: true });
+      } else {
+        console.log('hit else like a mofo');
+        // Default to the first list if no list is selected
+        const defaultList = shoppingLists[0];
+        setSelectedShoppingListById(defaultList.id);
+        // navigate(`/${defaultList.id}`, { replace: true });
+      }
+    } else {
+      // If there's a listId, find the matching list
+
+      // If the list exists and isn't already selected, select it
+      if (!selectedShoppingList || selectedShoppingList.id !== listId) {
+        setSelectedShoppingListById(listId);
       }
     }
-  }, [listId, shoppingLists, selectedShoppingList, setSelectedShoppingList]);
+  }, [
+    listId,
+    shoppingLists,
+    selectedShoppingList,
+    navigate,
+    setSelectedShoppingListById,
+  ]);
 
   return (
     <>
       <Helmet>
         <title>
-          {/* TODO: Explore shogiwn count of items here. Could be nice for mobile tab use. */}
-          {selectedShoppingList ? selectedShoppingList.name : 'Ostoslistat'}
+          {selectedShoppingList ? selectedShoppingList.name : 'Ostis'}
         </title>
         <meta name="description" content="Home Page" />
       </Helmet>
@@ -52,6 +75,7 @@ const HomePage = () => {
           expand
           visibleToasts={9}
         />
+
         <header className="p-4 bg-gray-800 text-white flex justify-between">
           <a href="/" className="flex gap-1 items-center">
             <div className="flex gap-1 items-center">
@@ -59,6 +83,7 @@ const HomePage = () => {
               <h1 className="text-xl font-poppinsMedium">ostis</h1>
             </div>
           </a>
+
           {/* Header */}
           {user ? (
             <button onClick={() => auth.signOut()}>Sign Out</button>
@@ -77,7 +102,8 @@ const HomePage = () => {
 
         {user && (
           <main className="flex-1 overflow-auto w-full lg:max-w-4xl lg:mx-auto">
-            {/* <CreateShoppingList /> */}
+            {/* Pass handleListSelection to the List component to handle list selection */}
+            {/* <List onListSelect={handleListSelection} /> */}
             <List />
           </main>
         )}
