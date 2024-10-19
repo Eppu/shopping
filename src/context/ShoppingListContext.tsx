@@ -1,5 +1,6 @@
 // src/context/ShoppingListContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   getShoppingListsForCurrentUser,
   subscribeToItemsForList,
@@ -16,6 +17,7 @@ const ShoppingListContext = createContext<{
   sharedShoppingLists: ShoppingList[];
   selectedShoppingList: ShoppingList | null;
   setSelectedShoppingList: (list: ShoppingList | null) => void;
+  setSelectedShoppingListById: (id: string) => void;
   loading: boolean;
   items: Item[];
 }>({
@@ -24,6 +26,7 @@ const ShoppingListContext = createContext<{
   sharedShoppingLists: [],
   selectedShoppingList: null,
   setSelectedShoppingList: () => {},
+  setSelectedShoppingListById: () => {},
   loading: true,
   items: [],
 });
@@ -41,6 +44,23 @@ export const ShoppingListProvider = ({ children }: Props) => {
   const [items, setItems] = useState<Item[]>([]);
 
   const { user } = useUser();
+  const navigate = useNavigate();
+
+  // Function to set selected shopping list by ID
+  const setSelectedShoppingListById = (id: string) => {
+    const list = shoppingLists.find((list) => list.id === id);
+    if (!list) {
+      const sharedList = sharedShoppingLists.find((list) => list.id === id);
+      if (sharedList) {
+        setSelectedShoppingList(sharedList);
+        return;
+      }
+      console.error('Could not get list with id:', id);
+    }
+    setSelectedShoppingList(list || null);
+    console.log('Navigating to', `/${(list && list.id) || ''}`);
+    navigate(`/${(list && list.id) || ''}`, { replace: true });
+  };
 
   useEffect(() => {
     const fetchLists = async () => {
@@ -54,8 +74,10 @@ export const ShoppingListProvider = ({ children }: Props) => {
 
         if (lists.length > 0) {
           setSelectedShoppingList(lists[0]);
+          navigate(`/${lists[0].id}`, { replace: true });
         } else if (sharedLists.length > 0) {
           setSelectedShoppingList(sharedLists[0]);
+          navigate(`/${sharedLists[0].id}`, { replace: true });
         }
       } catch (error) {
         console.error('Error fetching shopping lists:', error);
@@ -121,6 +143,7 @@ export const ShoppingListProvider = ({ children }: Props) => {
         sharedShoppingLists,
         selectedShoppingList,
         setSelectedShoppingList,
+        setSelectedShoppingListById,
         items,
         loading,
       }}

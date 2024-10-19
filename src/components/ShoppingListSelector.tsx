@@ -26,7 +26,8 @@ export function ShoppingListSelector() {
     shoppingLists,
     sharedShoppingLists,
     selectedShoppingList,
-    setSelectedShoppingList,
+    // setSelectedShoppingList,
+    setSelectedShoppingListById,
   } = useShoppingList();
 
   return (
@@ -53,8 +54,9 @@ export function ShoppingListSelector() {
                 `}
               onSelect={(e) => {
                 e.preventDefault();
-                window.history.pushState(null, '', `/${list.id}`);
-                setSelectedShoppingList(list);
+                // window.history.pushState(null, '', `/${list.id}`);
+                // setSelectedShoppingList(list);
+                setSelectedShoppingListById(list.id);
               }}
             >
               <span>{list.name}</span>
