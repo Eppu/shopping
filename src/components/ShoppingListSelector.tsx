@@ -53,6 +53,7 @@ export function ShoppingListSelector() {
                 `}
               onSelect={(e) => {
                 e.preventDefault();
+                window.history.pushState(null, '', `/${list.id}`);
                 setSelectedShoppingList(list);
               }}
             >

@@ -6,6 +6,7 @@ import {
   fetchUserSharedLists,
 } from '../utils/FirebaseFunctions';
 import { useUser } from './AuthContext';
+import { useParams } from 'react-router-dom';
 
 import { Item, ShoppingList } from '@/lib/types';
 
@@ -73,12 +74,21 @@ export const ShoppingListProvider = ({ children }: Props) => {
     }
   }, [user]);
 
+  // const listId = useParams<{ listId: string }>()?.listId;
+
   useEffect(() => {
     if (!selectedShoppingList) {
       return;
     }
 
     setLoading(true);
+
+    // if (listId) {
+    //   const list = shoppingLists.find((list) => list.id === listId);
+    //   if (list) {
+    //     window.history.pushState({}, '', `/${list.id}`);
+    //   }
+    // }
 
     // fetch shopping lists in case a new list was created
     const fetchLists = async () => {

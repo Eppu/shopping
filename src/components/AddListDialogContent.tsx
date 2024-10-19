@@ -24,6 +24,7 @@ export default function AddListDialogContent() {
       // create a new shopping list and set it as the selected list
       const newList = await createShoppingList(name);
       setSelectedShoppingList(newList);
+      window.history.pushState(null, '', `/${newList.id}`);
       setName('');
     } catch (error) {
       console.error('Error creating shopping list:', error);

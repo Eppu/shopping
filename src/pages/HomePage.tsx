@@ -3,8 +3,9 @@ import { auth } from '../firebase/firebase';
 import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
 import List from '@/components/List';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useShoppingList } from '@/context/ShoppingListContext';
+import { useParams } from 'react-router-dom';
 
 import { Toaster } from '@/components/ui/sonner';
 
@@ -13,7 +14,25 @@ import { Helmet } from 'react-helmet';
 const HomePage = () => {
   const { user } = useUser();
   const [isSignIn, setIsSignIn] = useState(true);
-  const { selectedShoppingList } = useShoppingList();
+  const { selectedShoppingList, shoppingLists, setSelectedShoppingList } =
+    useShoppingList();
+  const { listId } = useParams();
+
+  // When the user enters the page, check if the listId is in the shoppingLists. If it is, and the currently selected list is not already selected, set it as the selected list
+  // This is kind of messy but it works for now. I should probably refactor this.
+  useEffect(() => {
+    // if there is no listId, but there is a selectedShoppingList, set the listId to the selectedShoppingList id
+    if (!listId && selectedShoppingList) {
+      window.history.pushState(null, '', `/${selectedShoppingList.id}`);
+    }
+
+    if (listId && shoppingLists.length > 0) {
+      const list = shoppingLists.find((list) => list.id === listId);
+      if (list && !selectedShoppingList) {
+        setSelectedShoppingList(list);
+      }
+    }
+  }, [listId, shoppingLists, selectedShoppingList, setSelectedShoppingList]);
 
   return (
     <>

@@ -15,6 +15,10 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
+        path: '/:listId',
+        element: <HomePage />,
+      },
+      {
         path: '/dashboard',
         element: <h1>Dashboard</h1>,
       },
