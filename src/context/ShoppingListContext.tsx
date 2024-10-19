@@ -6,7 +6,6 @@ import {
   fetchUserSharedLists,
 } from '../utils/FirebaseFunctions';
 import { useUser } from './AuthContext';
-import { useParams } from 'react-router-dom';
 
 import { Item, ShoppingList } from '@/lib/types';
 
