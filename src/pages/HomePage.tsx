@@ -15,7 +15,7 @@ const HomePage = () => {
   const {
     selectedShoppingList,
     shoppingLists,
-    sharedShoppingLists,
+    // sharedShoppingLists,
     setSelectedShoppingListById,
   } = useShoppingList();
   const { listId } = useParams();
