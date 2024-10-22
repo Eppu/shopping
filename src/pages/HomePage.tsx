@@ -25,38 +25,38 @@ const HomePage = () => {
   // I will refactor it later. I promise.
 
   // This useEffect runs when listId or shoppingLists change
-  useEffect(() => {
-    if (!shoppingLists.length) {
-      return; // Exit if shopping lists haven't been loaded yet
-    }
+  // useEffect(() => {
+  //   if (!shoppingLists.length) {
+  //     return; // Exit if shopping lists haven't been loaded yet
+  //   }
 
-    // Handle the case where no listId is present in the URL
-    if (!listId) {
-      if (selectedShoppingList) {
-        // Redirect to the selectedShoppingList's ID
-        navigate(`/${selectedShoppingList.id}`, { replace: true });
-      } else {
-        console.log('hit else like a mofo');
-        // Default to the first list if no list is selected
-        const defaultList = shoppingLists[0];
-        setSelectedShoppingListById(defaultList.id);
-        // navigate(`/${defaultList.id}`, { replace: true });
-      }
-    } else {
-      // If there's a listId, find the matching list
+  //   // Handle the case where no listId is present in the URL
+  //   if (!listId) {
+  //     if (selectedShoppingList) {
+  //       // Redirect to the selectedShoppingList's ID
+  //       navigate(`/${selectedShoppingList.id}`, { replace: true });
+  //     } else {
+  //       console.log('hit else like a mofo');
+  //       // Default to the first list if no list is selected
+  //       const defaultList = shoppingLists[0];
+  //       setSelectedShoppingListById(defaultList.id);
+  //       // navigate(`/${defaultList.id}`, { replace: true });
+  //     }
+  //   } else {
+  //     // If there's a listId, find the matching list
 
-      // If the list exists and isn't already selected, select it
-      if (!selectedShoppingList || selectedShoppingList.id !== listId) {
-        setSelectedShoppingListById(listId);
-      }
-    }
-  }, [
-    listId,
-    shoppingLists,
-    selectedShoppingList,
-    navigate,
-    setSelectedShoppingListById,
-  ]);
+  //     // If the list exists and isn't already selected, select it
+  //     if (!selectedShoppingList || selectedShoppingList.id !== listId) {
+  //       setSelectedShoppingListById(listId);
+  //     }
+  //   }
+  // }, [
+  //   listId,
+  //   shoppingLists,
+  //   selectedShoppingList,
+  //   navigate,
+  //   setSelectedShoppingListById,
+  // ]);
 
   return (
     <>

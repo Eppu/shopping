@@ -6,8 +6,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { deleteShoppingList } from '@/utils/FirebaseFunctions';
-
 import { MoreHorizontal, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -24,10 +22,11 @@ export default function ListActions({ shoppingListId }: Props) {
     selectedShoppingList,
     setSelectedShoppingList,
     setShoppingLists,
+    removeShoppingListById,
   } = useShoppingList();
 
   const handleDeleteList = async () => {
-    await deleteShoppingList(shoppingListId);
+    removeShoppingListById(shoppingListId);
     // remove the list from the context
     const updatedLists = shoppingLists.filter(
       (list) => list.id !== shoppingListId
