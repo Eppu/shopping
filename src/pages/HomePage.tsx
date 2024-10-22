@@ -3,60 +3,15 @@ import { auth } from '../firebase/firebase';
 import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
 import List from '@/components/List';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useShoppingList } from '@/context/ShoppingListContext';
-import { useParams, useNavigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { Helmet } from 'react-helmet';
 
 const HomePage = () => {
   const { user } = useUser();
   const [isSignIn, setIsSignIn] = useState(true);
-  const {
-    selectedShoppingList,
-    shoppingLists,
-    // sharedShoppingLists,
-    setSelectedShoppingListById,
-  } = useShoppingList();
-  const { listId } = useParams();
-  const navigate = useNavigate();
-
-  // This is giga messy but it works for now. It's almost 2am and I couldn't be bothered to refactor it.
-  // I will refactor it later. I promise.
-
-  // This useEffect runs when listId or shoppingLists change
-  // useEffect(() => {
-  //   if (!shoppingLists.length) {
-  //     return; // Exit if shopping lists haven't been loaded yet
-  //   }
-
-  //   // Handle the case where no listId is present in the URL
-  //   if (!listId) {
-  //     if (selectedShoppingList) {
-  //       // Redirect to the selectedShoppingList's ID
-  //       navigate(`/${selectedShoppingList.id}`, { replace: true });
-  //     } else {
-  //       console.log('hit else like a mofo');
-  //       // Default to the first list if no list is selected
-  //       const defaultList = shoppingLists[0];
-  //       setSelectedShoppingListById(defaultList.id);
-  //       // navigate(`/${defaultList.id}`, { replace: true });
-  //     }
-  //   } else {
-  //     // If there's a listId, find the matching list
-
-  //     // If the list exists and isn't already selected, select it
-  //     if (!selectedShoppingList || selectedShoppingList.id !== listId) {
-  //       setSelectedShoppingListById(listId);
-  //     }
-  //   }
-  // }, [
-  //   listId,
-  //   shoppingLists,
-  //   selectedShoppingList,
-  //   navigate,
-  //   setSelectedShoppingListById,
-  // ]);
+  const { selectedShoppingList } = useShoppingList();
 
   return (
     <>

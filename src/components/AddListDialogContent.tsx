@@ -11,27 +11,16 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useShoppingList } from '@/context/ShoppingListContext';
 import { useState } from 'react';
-import { createShoppingList } from '@/utils/FirebaseFunctions';
 
 export default function AddListDialogContent() {
-  const {
-    setSelectedShoppingList,
-    createNewShoppingList,
-    setShoppingLists,
-    shoppingLists,
-  } = useShoppingList();
+  const { createNewShoppingList } = useShoppingList();
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCreateList = async () => {
     setIsSubmitting(true);
     try {
-      // create a new shopping list and set it as the selected list
-      // const newList = await createShoppingList(name);
       createNewShoppingList(name);
-      // setSelectedShoppingList(newList);
-      // setShoppingLists([...shoppingLists, newList]);
-      // window.history.pushState(null, '', `/${newList.id}`);
       setName('');
     } catch (error) {
       console.error('Error creating shopping list:', error);
