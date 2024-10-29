@@ -1,7 +1,7 @@
 // TODO: Refactor this component into smaller components
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Minus, Trash2 } from 'lucide-react';
+import { Plus, Minus, Trash2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import EmojiLoader from '@/components/EmojiLoader';
@@ -25,6 +25,7 @@ import { useShoppingList } from '@/context/ShoppingListContext';
 import {
   addItemToList,
   removeAllItemsFromList,
+  removeSelectedItemsFromList,
 } from '@/utils/FirebaseFunctions';
 
 // TODO: Dismiss all toasts when changing shopping lists
@@ -95,6 +96,8 @@ export default function List() {
     return <div>Ostolistaa ei ole valittu.</div>;
   }
 
+  const hasPurchasedItems = items.some((item) => item.purchased);
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center">
@@ -122,15 +125,32 @@ export default function List() {
       </CardHeader>
 
       <CardContent>
-        <Table className="overflow-x-auto">
+        <Table className="max-h-11 ">
           <TableHeader>
-            <TableRow>
-              <TableHead>Tavara</TableHead>
-              <TableHead className="text-right">Ostettu</TableHead>
-              {/* <TableHead className="text-right">Lisännyt</TableHead> */}
-              <TableHead className="text-right" />
-              {/* Empty column for actions */}
-            </TableRow>
+            {/* <TableRow> */}
+            <TableHead>Tavara</TableHead>
+            <TableHead className="text-right">Ostettu</TableHead>
+            {/* <TableHead className="text-right">Lisännyt</TableHead> */}
+            {/* <TableHead className="text-right" /> */}
+            <TableHead className="text-right p-0">
+              {hasPurchasedItems && (
+                <Button
+                  className="p-1"
+                  variant="ghost"
+                  onClick={() => {
+                    console.log(
+                      'removeSelectedItemsFromList(selectedShoppingList.id)'
+                    );
+                    removeSelectedItemsFromList(selectedShoppingList.id);
+                  }}
+                >
+                  <Check className="h-4 w-4" />
+                  {/* <Trash2 className="h-4 w-4" /> */}
+                </Button>
+              )}
+            </TableHead>
+            {/* Empty column for actions */}
+            {/* </TableRow> */}
             {isAddMenuOpen && (
               <TableRow>
                 <TableCell colSpan={3}>

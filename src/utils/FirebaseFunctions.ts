@@ -195,6 +195,18 @@ export async function removeAllItemsFromList(listId: string) {
   });
 }
 
+export async function removeSelectedItemsFromList(listId: string) {
+  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const querySnapshot = await getDocs(itemsRef);
+
+  querySnapshot.docs.forEach(async (doc) => {
+    const itemData = doc.data();
+    if (itemData.purchased) {
+      await deleteDoc(doc.ref);
+    }
+  });
+}
+
 // Adds a user to the sharedWith array based on their email
 // Ideally we'd do this based on the user's ID, but for simplicity we're using email here
 // I might change this later
