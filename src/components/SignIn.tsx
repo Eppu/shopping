@@ -28,24 +28,24 @@ export default function SignIn() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">Kirjaudu sisään</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account.
+          Kirjaudu sisään sähköpostillasi ja salasanallasi.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid gap-4 px-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">Sähköposti</Label>
           <Input
             id="email"
             type="email"
-            placeholder="m@example.com"
+            placeholder="test@example.com"
             required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Salasana</Label>
           <Input
             id="password"
             type="password"
@@ -55,8 +55,8 @@ export default function SignIn() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={handleSignIn}>
-          Sign in
+        <Button className="w-full mt-4" onClick={handleSignIn}>
+          Kirjaudu sisään
         </Button>
       </CardFooter>
     </Card>

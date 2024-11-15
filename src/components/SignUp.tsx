@@ -28,24 +28,24 @@ export default function SignUp() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Sign Up</CardTitle>
+        <CardTitle className="text-2xl">Luo tili</CardTitle>
         <CardDescription>
-          Enter your email below to create a new account.
+          Luo uusi käyttäjätili ja aloita listojen jakaminen.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid gap-4 px-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">Sähköposti</Label>
           <Input
             id="email"
             type="email"
-            placeholder="m@example.com"
+            placeholder="test@example.com"
             required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Salasana</Label>
           <Input
             id="password"
             type="password"
@@ -55,8 +55,8 @@ export default function SignUp() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={handleSignUp}>
-          Sign in
+        <Button className="w-full mt-4" onClick={handleSignUp}>
+          Luo tili
         </Button>
       </CardFooter>
     </Card>

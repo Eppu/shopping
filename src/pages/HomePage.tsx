@@ -19,7 +19,7 @@ const HomePage = () => {
         <title>
           {selectedShoppingList ? selectedShoppingList.name : 'Ostis'}
         </title>
-        <meta name="description" content="Home Page" />
+        <meta name="description" content="Kotisivu" />
       </Helmet>
 
       <div className="flex flex-col h-screen">
@@ -30,38 +30,34 @@ const HomePage = () => {
           expand
           visibleToasts={9}
         />
-
-        <header className="p-4 bg-gray-800 text-white flex justify-between">
+        <header className="px-4 py-3 bg-white text-black flex justify-between rounded-b-md shadow-sm h-13 ">
           <a href="/" className="flex gap-1 items-center">
             <div className="flex gap-1 items-center">
               <img src="/logo.svg" alt="logo" className="h-6" />
               <h1 className="text-xl font-poppinsMedium">ostis</h1>
             </div>
           </a>
-
-          {/* Header */}
           {user ? (
-            <button onClick={() => auth.signOut()}>Sign Out</button>
+            <button onClick={() => auth.signOut()}>Kirjaudu ulos</button>
           ) : (
-            <>
-              <button
-                onClick={() => setIsSignIn((prev) => !prev)}
-                className="mb-4"
-              >
-                {isSignIn ? 'Sign Up' : 'Sign In'}
-              </button>
-              {isSignIn ? <SignIn /> : <SignUp />}
-            </>
+            <button onClick={() => setIsSignIn((prev) => !prev)}>
+              {isSignIn ? 'Luo tili' : 'Kirjaudu sisään'}
+            </button>
           )}
         </header>
 
-        {user && (
-          <main className="flex-1 overflow-auto w-full lg:max-w-4xl lg:mx-auto">
-            {/* Pass handleListSelection to the List component to handle list selection */}
-            {/* <List onListSelect={handleListSelection} /> */}
-            <List />
-          </main>
-        )}
+        <main className="h-full  overflow-auto w-full lg:max-w-4xl lg:mx-auto">
+          {!user ? (
+            // align this div to the center of the entire page
+            <div className="flex flex-col items-center px-1 py-32">
+              {isSignIn ? <SignIn /> : <SignUp />}
+            </div>
+          ) : (
+            <div className="pt-0 2xl:pt-8 lg:pt-4">
+              <List />
+            </div>
+          )}
+        </main>
       </div>
     </>
   );
