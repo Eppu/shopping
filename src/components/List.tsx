@@ -101,7 +101,7 @@ export default function List() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center">
+      <CardHeader className="flex flex-row items-center sticky top-0 bg-white rounded-lg">
         <div className="grid gap-2">
           <div className="flex items-center  gap-1">
             <CardTitle>{selectedShoppingList.name}</CardTitle>

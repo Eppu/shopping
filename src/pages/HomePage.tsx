@@ -30,7 +30,7 @@ const HomePage = () => {
           expand
           visibleToasts={9}
         />
-        <header className="px-4 py-3 bg-white text-black flex justify-between rounded-b-md shadow-sm h-13 ">
+        <header className="px-4 py-3 bg-white text-black flex justify-between rounded-b-md shadow-sm h-13">
           <a href="/" className="flex gap-1 items-center">
             <div className="flex gap-1 items-center">
               <img src="/logo.svg" alt="logo" className="h-6" />
@@ -46,14 +46,14 @@ const HomePage = () => {
           )}
         </header>
 
-        <main className="h-full  overflow-auto w-full lg:max-w-4xl lg:mx-auto">
+        <main className="h-full  w-full lg:max-w-4xl lg:mx-auto">
           {!user ? (
             // align this div to the center of the entire page
             <div className="flex flex-col items-center px-1 py-32">
               {isSignIn ? <SignIn /> : <SignUp />}
             </div>
           ) : (
-            <div className="pt-0 2xl:pt-8 lg:pt-4">
+            <div className="h-full pt-0 2xl:pt-8 lg:pt-4 overflow-none">
               <List />
             </div>
           )}
