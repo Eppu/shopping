@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from '@firebase/firestore-types';
+import { FieldValue, Timestamp } from "@firebase/firestore-types";
 
 export type Item = {
   id: string;
@@ -14,8 +14,8 @@ export type Items = Item[];
 
 // map permissions so that i.e. Edit -> "edit"
 export enum PermissionTypes {
-  Edit = 'edit',
-  Delete = 'delete',
+  Edit = "edit",
+  Delete = "delete",
 }
 
 export type Permissions = {

@@ -1,12 +1,12 @@
-import { useUser } from '../context/AuthContext';
-import { auth } from '../firebase/firebase';
-import SignIn from '@/components/SignIn';
-import SignUp from '@/components/SignUp';
-import List from '@/components/List';
-import { useState } from 'react';
-import { useShoppingList } from '@/context/ShoppingListContext';
-import { Toaster } from '@/components/ui/sonner';
-import { Helmet } from 'react-helmet';
+import { useUser } from "../context/AuthContext";
+import { auth } from "../firebase/firebase";
+import SignIn from "@/components/SignIn";
+import SignUp from "@/components/SignUp";
+import List from "@/components/List";
+import { useState } from "react";
+import { useShoppingList } from "@/context/ShoppingListContext";
+import { Toaster } from "@/components/ui/sonner";
+import { Helmet } from "react-helmet";
 
 const HomePage = () => {
   const { user } = useUser();
@@ -17,7 +17,7 @@ const HomePage = () => {
     <>
       <Helmet>
         <title>
-          {selectedShoppingList ? selectedShoppingList.name : 'Ostis'}
+          {selectedShoppingList ? selectedShoppingList.name : "Ostis"}
         </title>
         <meta name="description" content="Kotisivu" />
       </Helmet>
@@ -41,7 +41,7 @@ const HomePage = () => {
             <button onClick={() => auth.signOut()}>Kirjaudu ulos</button>
           ) : (
             <button onClick={() => setIsSignIn((prev) => !prev)}>
-              {isSignIn ? 'Luo tili' : 'Kirjaudu sisään'}
+              {isSignIn ? "Luo tili" : "Kirjaudu sisään"}
             </button>
           )}
         </header>

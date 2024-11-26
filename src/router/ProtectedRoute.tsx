@@ -1,6 +1,6 @@
 // import { Outlet } from 'react-router-dom';
-import { useUser } from '../context/AuthContext';
-import NotFoundPage from '../pages/404';
+import { useUser } from "../context/AuthContext";
+import NotFoundPage from "../pages/404";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;

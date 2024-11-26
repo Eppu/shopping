@@ -1,12 +1,12 @@
 // TODO: Refactor this component into smaller components
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, Minus, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import EmojiLoader from '@/components/EmojiLoader';
-import { Input } from '@/components/ui/input';
-import RemovePurchasedItemsButton from './RemovePurchasedItemsButton';
+import { useEffect, useState, useRef, useCallback } from 'react'
+import { Link } from 'react-router-dom'
+import { Plus, Minus, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import EmojiLoader from '@/components/EmojiLoader'
+import { Input } from '@/components/ui/input'
+import RemovePurchasedItemsButton from './RemovePurchasedItemsButton'
 
 import {
   Table,
@@ -15,40 +15,40 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/table'
 
-import ListRow from './ListRow';
+import ListRow from './ListRow'
 
-import { ShoppingListSelector } from './ShoppingListSelector';
+import { ShoppingListSelector } from './ShoppingListSelector'
 
-import { useShoppingList } from '@/context/ShoppingListContext';
+import { useShoppingList } from '@/context/ShoppingListContext'
 
 import {
   addItemToList,
   removeAllItemsFromList,
   removeSelectedItemsFromList,
-} from '@/utils/FirebaseFunctions';
+} from '@/utils/FirebaseFunctions'
 
 // TODO: Dismiss all toasts when changing shopping lists
-import { toast } from 'sonner';
+import { toast } from 'sonner'
 
 export default function List() {
-  const { selectedShoppingList, loading, items } = useShoppingList();
+  const { selectedShoppingList, loading, items } = useShoppingList()
 
   // check if all items are purchased
   const allItemsPurchased =
-    items.length > 0 && items.every((item) => item.purchased);
+    items.length > 0 && items.every((item) => item.purchased)
 
-  const [newItemName, setNewItemName] = useState('');
-  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [newItemName, setNewItemName] = useState('')
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleAddItem = useCallback(() => {
     if (selectedShoppingList && newItemName) {
-      addItemToList(selectedShoppingList.id, newItemName.trim());
-      setNewItemName('');
+      addItemToList(selectedShoppingList.id, newItemName.trim())
+      setNewItemName('')
     }
-  }, [newItemName, selectedShoppingList]);
+  }, [newItemName, selectedShoppingList])
 
   useEffect(() => {
     if (allItemsPurchased && selectedShoppingList) {
@@ -59,8 +59,8 @@ export default function List() {
             <Button
               variant={'destructive'}
               onClick={() => {
-                removeAllItemsFromList(selectedShoppingList.id);
-                toast.dismiss(allItemsPurchasedToast);
+                removeAllItemsFromList(selectedShoppingList.id)
+                toast.dismiss(allItemsPurchasedToast)
               }}
               className="gap-2"
             >
@@ -75,29 +75,29 @@ export default function List() {
         {
           duration: 60000,
         }
-      );
+      )
     }
 
     return () => {
-      toast.dismiss();
-    };
-  }, [allItemsPurchased, selectedShoppingList]);
+      toast.dismiss()
+    }
+  }, [allItemsPurchased, selectedShoppingList])
 
   useEffect(() => {
     if (isAddMenuOpen && inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.focus()
     }
-  }, [isAddMenuOpen]);
+  }, [isAddMenuOpen])
 
   if (loading) {
-    return <EmojiLoader />;
+    return <EmojiLoader />
   }
 
   if (!selectedShoppingList) {
-    return <div>Ostolistaa ei ole valittu.</div>;
+    return <div>Ostolistaa ei ole valittu.</div>
   }
 
-  const hasPurchasedItems = items.some((item) => item.purchased);
+  const hasPurchasedItems = items.some((item) => item.purchased)
 
   return (
     <Card>
@@ -137,7 +137,7 @@ export default function List() {
               {hasPurchasedItems && (
                 <RemovePurchasedItemsButton
                   onClick={() => {
-                    removeSelectedItemsFromList(selectedShoppingList.id);
+                    removeSelectedItemsFromList(selectedShoppingList.id)
                   }}
                 />
               )}
@@ -156,17 +156,17 @@ export default function List() {
                       onChange={(e) => setNewItemName(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                          handleAddItem();
-                          setNewItemName('');
+                          handleAddItem()
+                          setNewItemName('')
                         }
                       }}
                     />
                     <Button
                       className="w-16"
                       onClick={() => {
-                        handleAddItem();
-                        setIsAddMenuOpen(false);
-                        setNewItemName('');
+                        handleAddItem()
+                        setIsAddMenuOpen(false)
+                        setNewItemName('')
                       }}
                     >
                       <Plus className="h-4 w-4" />
@@ -206,8 +206,8 @@ export default function List() {
             <Button
               variant={'destructive'}
               onClick={() => {
-                removeAllItemsFromList(selectedShoppingList.id);
-                toast.dismiss();
+                removeAllItemsFromList(selectedShoppingList.id)
+                toast.dismiss()
               }}
               className="gap-2"
             >
@@ -221,5 +221,5 @@ export default function List() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

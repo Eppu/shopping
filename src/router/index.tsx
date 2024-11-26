@@ -1,29 +1,29 @@
-import { createBrowserRouter } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
+import { createBrowserRouter } from "react-router-dom";
+import HomePage from "../pages/HomePage";
 
-import Providers from '../Providers';
-import ProtectedRoute from './ProtectedRoute';
+import Providers from "../Providers";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Providers />,
     children: [
       // Public routes
       {
-        path: '/',
+        path: "/",
         element: <HomePage />,
       },
       {
-        path: '/:listId',
+        path: "/:listId",
         element: <HomePage />,
       },
       {
-        path: '/dashboard',
+        path: "/dashboard",
         element: <h1>Dashboard</h1>,
       },
       {
-        path: '/protected',
+        path: "/protected",
         element: (
           <ProtectedRoute>
             <h1>Protected Route</h1>

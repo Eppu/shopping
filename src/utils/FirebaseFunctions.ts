@@ -11,23 +11,23 @@ import {
   query,
   where,
   onSnapshot,
-} from 'firebase/firestore';
-import { firestore, auth } from '../firebase/firebase';
+} from "firebase/firestore";
+import { firestore, auth } from "../firebase/firebase";
 
 import {
   PermissionTypes,
   ShoppingList,
   ShoppingLists,
   Items,
-} from '@/lib/types';
+} from "@/lib/types";
 
-import * as EmailValidator from 'email-validator';
+import * as EmailValidator from "email-validator";
 
 export async function createShoppingList(name: string) {
   const user = auth.currentUser;
-  if (!user) throw new Error('Not authenticated');
+  if (!user) throw new Error("Not authenticated");
 
-  const listRef = await addDoc(collection(firestore, 'shoppingLists'), {
+  const listRef = await addDoc(collection(firestore, "shoppingLists"), {
     name,
     ownerId: user.uid,
     createdAt: serverTimestamp(),
@@ -52,7 +52,7 @@ export async function createShoppingList(name: string) {
 }
 
 export async function deleteShoppingList(listId: string) {
-  const listRef = doc(firestore, 'shoppingLists', listId);
+  const listRef = doc(firestore, "shoppingLists", listId);
 
   await deleteDoc(listRef);
 }
@@ -63,13 +63,13 @@ export async function addItemToList(
   quantity = 1
 ) {
   const user = auth.currentUser;
-  if (!user) throw new Error('Not authenticated');
+  if (!user) throw new Error("Not authenticated");
 
-  if (!itemName || itemName.trim() === '') {
-    throw new Error('Item name cannot be empty');
+  if (!itemName || itemName.trim() === "") {
+    throw new Error("Item name cannot be empty");
   }
 
-  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const itemsRef = collection(firestore, "shoppingLists", listId, "items");
 
   await addDoc(itemsRef, {
     name: itemName,
@@ -81,9 +81,9 @@ export async function addItemToList(
 }
 
 export async function deleteItemFromList(listId: string, itemId: string) {
-  const itemRef = doc(firestore, 'shoppingLists', listId, 'items', itemId);
+  const itemRef = doc(firestore, "shoppingLists", listId, "items", itemId);
 
-  console.log('got item ref', itemRef);
+  console.log("got item ref", itemRef);
 
   await deleteDoc(itemRef);
 }
@@ -93,7 +93,7 @@ export async function shareShoppingList(
   userId: string,
   permission: unknown
 ) {
-  const listRef = doc(firestore, 'shoppingLists', listId);
+  const listRef = doc(firestore, "shoppingLists", listId);
 
   await updateDoc(listRef, {
     sharedWith: arrayUnion(userId),
@@ -105,11 +105,11 @@ export async function getShoppingListsForCurrentUser() {
   // Gets the shopping lists for the current user. The user must be authenticated.
   // The user can either be the owner of the list or have been shared the list.
   const user = auth.currentUser;
-  if (!user) throw new Error('Not authenticated');
+  if (!user) throw new Error("Not authenticated");
 
-  const listsRef = collection(firestore, 'shoppingLists');
+  const listsRef = collection(firestore, "shoppingLists");
   const querySnapshot = await getDocs(
-    query(listsRef, where('ownerId', '==', user.uid))
+    query(listsRef, where("ownerId", "==", user.uid))
   );
 
   const lists = querySnapshot.docs.map((doc) => ({
@@ -140,7 +140,7 @@ export async function getShoppingListsForCurrentUser() {
 }
 
 export async function getItemsForShoppingList(listId: string) {
-  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const itemsRef = collection(firestore, "shoppingLists", listId, "items");
   const querySnapshot = await getDocs(itemsRef);
 
   const items = querySnapshot.docs.map((doc) => ({
@@ -158,7 +158,7 @@ export function subscribeToItemsForList(
   listId: string,
   callback: (items: Items) => void
 ) {
-  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const itemsRef = collection(firestore, "shoppingLists", listId, "items");
 
   return onSnapshot(itemsRef, (snapshot) => {
     const items = snapshot.docs.map((doc) => ({
@@ -175,19 +175,19 @@ export async function setItemPurchasedStatus(
   itemId: string,
   purchased: boolean = true
 ) {
-  const itemRef = doc(firestore, 'shoppingLists', listId, 'items', itemId);
+  const itemRef = doc(firestore, "shoppingLists", listId, "items", itemId);
 
   try {
     await updateDoc(itemRef, {
       purchased: purchased, // Toggle the purchased status
     });
   } catch (error) {
-    console.error('Error updating item: ', error);
+    console.error("Error updating item: ", error);
   }
 }
 
 export async function removeAllItemsFromList(listId: string) {
-  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const itemsRef = collection(firestore, "shoppingLists", listId, "items");
   const querySnapshot = await getDocs(itemsRef);
 
   querySnapshot.docs.forEach(async (doc) => {
@@ -196,7 +196,7 @@ export async function removeAllItemsFromList(listId: string) {
 }
 
 export async function removeSelectedItemsFromList(listId: string) {
-  const itemsRef = collection(firestore, 'shoppingLists', listId, 'items');
+  const itemsRef = collection(firestore, "shoppingLists", listId, "items");
   const querySnapshot = await getDocs(itemsRef);
 
   querySnapshot.docs.forEach(async (doc) => {
@@ -212,11 +212,11 @@ export async function removeSelectedItemsFromList(listId: string) {
 // I might change this later
 export async function addUserToShoppingList(listId: string, email: string) {
   if (!EmailValidator.validate(email)) {
-    throw new Error('Invalid email address');
+    throw new Error("Invalid email address");
   }
-  console.log('adding user to list', email);
+  console.log("adding user to list", email);
 
-  const listRef = doc(firestore, 'shoppingLists', listId);
+  const listRef = doc(firestore, "shoppingLists", listId);
 
   await updateDoc(listRef, {
     sharedWith: arrayUnion(email),
@@ -227,7 +227,7 @@ export async function removeUserFromShoppingList(
   listId: string,
   email: string
 ) {
-  const listRef = doc(firestore, 'shoppingLists', listId);
+  const listRef = doc(firestore, "shoppingLists", listId);
 
   await updateDoc(listRef, {
     sharedWith: arrayRemove(email),
@@ -236,11 +236,11 @@ export async function removeUserFromShoppingList(
 
 export async function fetchUserSharedLists() {
   const user = auth.currentUser;
-  if (!user) throw new Error('Not authenticated');
+  if (!user) throw new Error("Not authenticated");
 
-  const listsRef = collection(firestore, 'shoppingLists');
+  const listsRef = collection(firestore, "shoppingLists");
   const querySnapshot = await getDocs(
-    query(listsRef, where('sharedWith', 'array-contains', user.email))
+    query(listsRef, where("sharedWith", "array-contains", user.email))
   );
 
   const lists = querySnapshot.docs.map((doc) => ({
@@ -255,7 +255,7 @@ export function onSharedUsersChange(
   listId: string,
   callback: (sharedWith: string[]) => void
 ) {
-  const listRef = doc(firestore, 'shoppingLists', listId);
+  const listRef = doc(firestore, "shoppingLists", listId);
 
   return onSnapshot(listRef, (docSnapshot) => {
     if (docSnapshot.exists()) {
