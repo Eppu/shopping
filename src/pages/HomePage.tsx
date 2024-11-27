@@ -1,16 +1,15 @@
 import { useUser } from "../context/AuthContext";
 import { auth } from "../firebase/firebase";
-import SignIn from "@/components/SignIn";
-import SignUp from "@/components/SignUp";
+
 import List from "@/components/List";
-import { useState } from "react";
 import { useShoppingList } from "@/context/ShoppingListContext";
 import { Toaster } from "@/components/ui/sonner";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import LandingPageContent from "@/components/LandingPageContent";
 
 const HomePage = () => {
   const { user } = useUser();
-  const [isSignIn, setIsSignIn] = useState(true);
   const { selectedShoppingList } = useShoppingList();
 
   return (
@@ -37,22 +36,21 @@ const HomePage = () => {
               <h1 className="text-xl font-poppinsMedium">ostis</h1>
             </div>
           </a>
-          {user ? (
-            <button onClick={() => auth.signOut()}>Kirjaudu ulos</button>
+          {!user ? (
+            <Link to="/login">Kirjaudu sisään</Link>
           ) : (
-            <button onClick={() => setIsSignIn((prev) => !prev)}>
-              {isSignIn ? "Luo tili" : "Kirjaudu sisään"}
-            </button>
+            <button onClick={() => auth.signOut()}>Kirjaudu ulos</button>
           )}
         </header>
 
         <main className="h-full  w-full lg:max-w-4xl lg:mx-auto">
           {!user ? (
-            // align this div to the center of the entire page
-            <div className="flex flex-col items-center px-1 py-32">
-              {isSignIn ? <SignIn /> : <SignUp />}
-            </div>
+            <LandingPageContent />
           ) : (
+            // align this div to the center of the entire page
+            // <div className="flex flex-col items-center px-1 py-32">
+            //   Tähän tulee landing pagen sisällöt
+            // </div>
             <div className="h-full pt-0 2xl:pt-8 lg:pt-4 overflow-none">
               <List />
             </div>

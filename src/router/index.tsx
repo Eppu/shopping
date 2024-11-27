@@ -3,6 +3,8 @@ import HomePage from "../pages/HomePage";
 
 import Providers from "../Providers";
 import ProtectedRoute from "./ProtectedRoute";
+import LoginPage from "@/pages/LoginPage";
+import RegisterPage from "@/pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,14 @@ const router = createBrowserRouter([
       {
         path: "/:listId",
         element: <HomePage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
       },
       {
         path: "/dashboard",
